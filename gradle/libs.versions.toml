@@ -1,0 +1,81 @@
+[versions]
+
+#Project
+kotlin = "1.8.10"
+gradle = "8.2.1"
+
+#AndroidX
+core-ktx = "1.12.0"
+
+#Lifecycle
+lifecycle = "2.7.0"
+
+#Compose
+activity-compose = "1.8.2"
+compose-bom = "2023.10.01"
+constraintlayout-compose = "1.0.1"
+material3 = "1.1.2"
+material-icons-extended = "1.5.4"
+ui-tooling-preview = "1.5.4"
+
+#ThirdParty
+koin = "3.4.3"
+coil = "2.4.0"
+
+#Network
+retrofit = "2.9.0"
+okhttp3-logging-interceptor = "5.0.0-alpha.3"
+
+#Tests
+junit = "4.13.2"
+test-ext-junit = "1.1.5"
+espresso = "3.5.1"
+
+[libraries]
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
+kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+#AndroidX
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+
+#Lifecycle
+lifecyle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+
+#Compose
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout-compose" }
+ui = { module = "androidx.compose.ui:ui" }
+ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "ui-tooling-preview" }
+
+#Others Compose
+ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+#Material3
+material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "material-icons-extended" }
+
+#ThirdParty
+koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
+
+#Network
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+okhttp3-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp3-logging-interceptor" }
+
+#Test
+junit = { module = "junit:junit", version.ref = "junit" }
+ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "test-ext-junit" }
+espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+
+[bundles]
+compose = ["activity-compose", "compose-bom", "ui", "ui-graphics", "ui-tooling-preview", "constraintlayout-compose"]
+others-compose = ["ui-tooling", "ui-test-manifest"]
+material3 = ["material3", "material-icons-extended"]
+retrofit = ["retrofit", "converter-gson", "okhttp3-logging-interceptor"]
+coil = ["coil", "coil-svg"]
