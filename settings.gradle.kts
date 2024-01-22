@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "DictionMaster"
 include(":app")
+include(":network")

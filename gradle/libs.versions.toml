@@ -30,6 +30,9 @@ okhttp3-logging-interceptor = "5.0.0-alpha.3"
 junit = "4.13.2"
 test-ext-junit = "1.1.5"
 espresso = "3.5.1"
+appcompat = "1.6.1"
+material = "1.11.0"
+constraintlayout = "2.1.4"
 
 [libraries]
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
@@ -72,6 +75,9 @@ junit = { module = "junit:junit", version.ref = "junit" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "test-ext-junit" }
 espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [bundles]
 compose = ["activity-compose", "compose-bom", "ui", "ui-graphics", "ui-tooling-preview", "constraintlayout-compose"]
