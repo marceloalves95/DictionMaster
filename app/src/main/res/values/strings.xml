@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">DictionMaster</string>
+    <string name="my_name">By Marcelo Alves</string>
+    <string name="english">English</string>
+    <string name="search">Search</string>
+    <string name="new_search">New Search</string>
+    <string name="subtitle">Try another search now!</string>
+    <string name="error">Erro no carregamento dos dados</string>
+    <string name="title_activity_purchase">PurchaseActivity</string>
+    <string name="subscribe">Subscribe</string>
 </resources>
