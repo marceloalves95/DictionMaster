@@ -1,9 +1,7 @@
 package br.com.dictionmaster.presentation.ui.result
 
 import android.content.Context
-import android.content.Intent
 import android.media.AudioAttributes
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
@@ -38,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.platform.LocalContext
@@ -53,15 +52,17 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import br.com.dictionmaster.R
+import br.com.dictionmaster.core.extensions.capitalizeWord
 import br.com.dictionmaster.domain.models.Definitions
+import br.com.dictionmaster.domain.models.Meanings
 import br.com.dictionmaster.domain.models.Search
 import br.com.dictionmaster.network.extensions.extra
 import br.com.dictionmaster.network.extensions.onBackButtonPressed
 import br.com.dictionmaster.presentation.mock.dummySearch
+import br.com.dictionmaster.presentation.others.MultiColorText
 import br.com.dictionmaster.presentation.theme.ButtonColor
 import br.com.dictionmaster.presentation.theme.DictionMasterTheme
 import br.com.dictionmaster.presentation.ui.model.DictionMasterState
-import br.com.dictionmaster.presentation.ui.search.SearchActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ResultActivity : ComponentActivity() {
@@ -95,6 +96,7 @@ class ResultActivity : ComponentActivity() {
 
     companion object {
         private const val WORD = "word"
+        private const val ONE = 1
     }
 
     @Composable
@@ -108,9 +110,6 @@ class ResultActivity : ComponentActivity() {
 
     @Composable
     fun ScreenData(search: List<Search>) {
-
-        //val test = search.map { it.meanings }.single()?.map { it.definitions }?.single()
-
         ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
@@ -132,7 +131,7 @@ class ResultActivity : ComponentActivity() {
                     items = search,
                     itemContent = { content ->
                         Text(
-                            text = content.word ?: "",
+                            text = content.word?.capitalizeWord() ?: "",
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
@@ -146,7 +145,11 @@ class ResultActivity : ComponentActivity() {
                             )
                         )
 
-                        val phonetic = content.phonetics?.map { it.audio }?.first() ?: ""
+                        var phonetic: String? = ""
+
+                        content.phonetics?.filter { it.audio != "" }?.map {
+                            phonetic = it.audio
+                        }
 
                         Row(
                             modifier = Modifier
@@ -162,10 +165,12 @@ class ResultActivity : ComponentActivity() {
                                     .clip(CircleShape)
                                     .background(ButtonColor),
                                 onClick = {
-                                    playAudio(
-                                        context = context,
-                                        audioUrl = phonetic
-                                    )
+                                    phonetic?.let {
+                                        playAudio(
+                                            context = context,
+                                            audioUrl = it
+                                        )
+                                    }
                                 }
                             ) {
                                 Icon(
@@ -174,8 +179,14 @@ class ResultActivity : ComponentActivity() {
                                     tint = White
                                 )
                             }
+
+                            var text = ""
+                            content.phonetics?.map {
+                                text = it.text.toString()
+                            }
+
                             Text(
-                                text = content.phonetic ?: "",
+                                text = content.phonetic ?: text,
                                 modifier = Modifier
                                     .padding(
                                         start = 16.dp,
@@ -189,50 +200,69 @@ class ResultActivity : ComponentActivity() {
                 )
             }
 
+            var definition = listOf<Definitions>()
+            var meaning = listOf<Meanings>()
+            search.map {
+                it.meanings?.map { meanings ->
+                    definition = meanings.definitions ?: emptyList()
+                }
+            }
+            search.map {
+                meaning = it.meanings ?: emptyList()
+            }
 
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 24.dp
+                    )
+                    .constrainAs(definitionsLazyColumn) {
+                        height = Dimension.fillToConstraints
+                        top.linkTo(phoneticsLazyColumn.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(divider.top)
+                    },
+            ) {
+                items(
+                    items = definition,
+                    itemContent = { content ->
+                        val indexList = definition.indexOf(content).plus(ONE)
+                        val partOfSpeech = meaning.map { it.partOfSpeech }
 
-//            LazyColumn(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(
-//                        top = 24.dp
-//                    )
-//                    .constrainAs(definitionsLazyColumn) {
-//                        height = Dimension.fillToConstraints
-//                        top.linkTo(phoneticsLazyColumn.bottom)
-//                        start.linkTo(parent.start)
-//                        end.linkTo(parent.end)
-//                        bottom.linkTo(divider.top)
-//                    },
-//            ) {
-//                items(
-//                    items = test,
-//                    itemContent = { content ->
-//                        Text(
-//                            text = content?.definition ?: "",
-//                            modifier = Modifier
-//                                .padding(
-//                                    start = 32.dp,
-//                                    end = 32.dp
-//                                ),
-//                            fontWeight = FontWeight.Bold,
-//                            fontSize = 16.sp
-//                        )
-//                        Text(
-//                            text = content?.example ?: "",
-//                            modifier = Modifier
-//                                .padding(
-//                                    top = 8.dp,
-//                                    start = 32.dp,
-//                                    end = 32.dp,
-//                                    bottom = 32.dp
-//                                ),
-//                            fontWeight = FontWeight.Light,
-//                            fontSize = 16.sp
-//                        )
-//                    }
-//                )
-//            }
+                        MultiColorText(
+                            Pair("$indexList) ", Color.Black),
+                            Pair("$partOfSpeech ", LightGray),
+                            Pair("${content.definition}", Color.Black),
+                            modifier = Modifier
+                                .padding(
+                                    start = 32.dp,
+                                    end = 32.dp,
+                                    bottom = 12.dp
+                                ),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            textAlign = TextAlign.Start
+                        )
+
+                        if (content.example?.isEmpty() == false) {
+                            Text(
+                                text = "• ${content.example}",
+                                modifier = Modifier
+                                    .padding(
+                                        top = 8.dp,
+                                        start = 32.dp,
+                                        end = 32.dp,
+                                        bottom = 12.dp
+                                    ),
+                                fontWeight = FontWeight.Light,
+                                fontSize = 16.sp
+                            )
+                        }
+                    }
+                )
+            }
 
             Divider(
                 modifier = Modifier
@@ -245,7 +275,7 @@ class ResultActivity : ComponentActivity() {
                 color = LightGray, thickness = 1.dp
             )
 
-            val wordSearch = search.map { it.word }.single()
+            val wordSearch = search.map { it.word }.first()
 
             Text(
                 text = "That’s it for \"$wordSearch\"!",

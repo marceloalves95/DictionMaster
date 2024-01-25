@@ -7,7 +7,6 @@ import br.com.dictionmaster.network.event.Event
 import br.com.dictionmaster.presentation.ui.model.DictionMasterState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 
 class ResultViewModel(
     private val getSearchWordUseCase: GetSearchWordUseCase
@@ -16,8 +15,8 @@ class ResultViewModel(
     private val _state = MutableStateFlow<DictionMasterState>(DictionMasterState.Loading)
     val state: StateFlow<DictionMasterState> get() = _state
 
-    fun searchWord(word:String?) = launch{
-        getSearchWordUseCase.invoke(word).collect{ event ->
+    fun searchWord(word: String?) = launch {
+        getSearchWordUseCase.invoke(word).collect { event ->
             when (event) {
                 is Event.Data -> {
                     _state.value = DictionMasterState.ScreenData(event.data)
@@ -26,6 +25,7 @@ class ResultViewModel(
                 is Event.Error -> {
                     _state.value = DictionMasterState.Error(event.error)
                 }
+
                 else -> Unit
             }
         }

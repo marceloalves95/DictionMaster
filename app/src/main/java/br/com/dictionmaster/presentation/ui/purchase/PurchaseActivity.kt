@@ -1,12 +1,11 @@
 package br.com.dictionmaster.presentation.ui.purchase
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,24 +21,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import br.com.dictionmaster.R
-import br.com.dictionmaster.network.extensions.onBackButtonPressed
+import br.com.dictionmaster.presentation.others.MultiColorText
 import br.com.dictionmaster.presentation.theme.ButtonColor
 import br.com.dictionmaster.presentation.theme.DictionMasterTheme
 
@@ -114,17 +108,19 @@ class PurchaseActivity : ComponentActivity() {
                         Pair("searches and full access to ", Black),
                         Pair("all features", ButtonColor),
                         Pair(".", Black),
-                        modifier = Modifier.constrainAs(titleText) {
-                            top.linkTo(imageTitle.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
+                        modifier = Modifier
+                            .constrainAs(titleText) {
+                                top.linkTo(imageTitle.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            }
                             .padding(
                                 start = 32.dp,
                                 end = 32.dp
                             ),
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
                     )
 
                     MultiColorText(
@@ -132,22 +128,25 @@ class PurchaseActivity : ComponentActivity() {
                         Pair(", then only ", LightGray),
                         Pair("\$19,99 ", Black),
                         Pair("per year. Cancel anytime.", LightGray),
-                        modifier = Modifier.constrainAs(subtitleText) {
-                            top.linkTo(titleText.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
+                        modifier = Modifier
+                            .constrainAs(subtitleText) {
+                                top.linkTo(titleText.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                            }
                             .padding(
                                 top = 18.dp,
                                 start = 32.dp,
                                 end = 32.dp
                             ),
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Light
+                        fontWeight = FontWeight.Light,
+                        textAlign = TextAlign.Center
                     )
 
                     Button(
                         onClick = {
+                            finish()
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -179,21 +178,8 @@ class PurchaseActivity : ComponentActivity() {
         )
     }
 
-    @Composable
-    fun MultiColorText(vararg textWithColors: Pair<String, Color>, modifier: Modifier, fontSize: TextUnit, fontWeight:FontWeight) {
-        Text(
-            modifier = modifier,
-            text = buildAnnotatedString {
-                textWithColors.forEach { (text, color) ->
-                    withStyle(style = SpanStyle(color = color)) {
-                        append(text)
-                    }
-                }
-            },
-            fontSize = fontSize,
-            fontWeight = fontWeight,
-            textAlign = TextAlign.Center
-        )
+    companion object {
+        fun newInstance(context: Context) = Intent(context, PurchaseActivity::class.java)
     }
 
     @Preview(showBackground = true)
