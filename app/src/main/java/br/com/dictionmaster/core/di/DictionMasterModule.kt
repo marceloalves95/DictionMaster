@@ -5,8 +5,10 @@ import br.com.dictionmaster.data.DictionMasterRepositoryImpl
 import br.com.dictionmaster.data.api.DictionMasterApi
 import br.com.dictionmaster.domain.repository.DictionMasterRepository
 import br.com.dictionmaster.domain.usecase.GetSearchWordUseCase
-import br.com.dictionmaster.network.service.Service
+import br.com.dictionmaster.network.others.Interceptor
+import br.com.dictionmaster.network.others.Service
 import br.com.dictionmaster.presentation.ui.result.ResultViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
 import org.koin.core.module.Module
@@ -26,8 +28,15 @@ object DictionMasterModule {
 
     private fun dataModule(): Module = module {
         factory<DictionMasterApi> {
-            Service.createService(
+            Service(
+                context = androidContext()
+            ).createService(
                 baseUrl = BASE_URL
+            )
+        }
+        factory {
+            Interceptor(
+                context = androidContext()
             )
         }
         single<DictionMasterRepository> {
@@ -43,7 +52,9 @@ object DictionMasterModule {
 
     private fun presentationModule(): Module = module {
         viewModel {
-            ResultViewModel(getSearchWordUseCase = get())
+            ResultViewModel(
+                getSearchWordUseCase = get()
+            )
         }
     }
 
