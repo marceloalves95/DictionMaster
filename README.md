@@ -15,3 +15,10 @@ As principais libraries utilizadas no projeto:
 - Material 3
 - Koin
 - Retrofit
+
+# Tela1
+![](Tela1.png)
+![](Tela2.png)
+![](Tela2.1.png)
+![](Tela3.png)
+![](Tela4.png)
