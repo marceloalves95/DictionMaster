@@ -16,9 +16,11 @@ As principais libraries utilizadas no projeto:
 - Koin
 - Retrofit
 
-# Tela1
-![](Tela1.png)
-![](Tela2.png)
-![](Tela2.1.png)
-![](Tela3.png)
-![](Tela4.png)
+# Telas
+| ![](telas/SplashScreen.png)   | ![](telas/SearchScreen.png) |
+|-------------------------------|-----------------------------|
+| Tela de SplashScreen          | Tela de Busca               |
+| ![](telas/Search2Screen.png)  | ![](telas/ResultScreen.png) |
+| Palavra digitada para a busca | Tela do Resultado da Busca  |
+| ![](telas/PurchaseScreen.png) |                             |
+| Tela Final do Aplicativo      |                             |
