@@ -63,7 +63,6 @@ import br.com.dictionmaster.presentation.others.MultiColorText
 import br.com.dictionmaster.presentation.theme.ButtonColor
 import br.com.dictionmaster.presentation.theme.DictionMasterTheme
 import br.com.dictionmaster.presentation.ui.model.DictionMasterState
-import br.com.dictionmaster.presentation.ui.purchase.PurchaseActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ResultActivity : ComponentActivity() {
@@ -86,10 +85,6 @@ class ResultActivity : ComponentActivity() {
                         content = { paddingValues ->
                             Column(modifier = Modifier.padding(paddingValues)) {
                                 viewModel.searchWord(word)
-                                if (viewModel.getNumberOfFoundWords() <= 10) {
-                                    val intent = PurchaseActivity.newInstance(context)
-                                    startActivity(intent)
-                                }
                                 SearchWordState(state = state)
                             }
                         }
