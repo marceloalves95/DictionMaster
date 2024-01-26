@@ -5,4 +5,5 @@ import retrofit2.http.Path
 
 interface DictionMasterRepository {
     suspend fun getSearchWord(word:String?): List<Search>
+    fun getNumberOfSavedWordsFromLocalData(): Int
 }
