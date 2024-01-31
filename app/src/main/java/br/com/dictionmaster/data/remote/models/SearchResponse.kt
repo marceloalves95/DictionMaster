@@ -1,4 +1,4 @@
-package br.com.dictionmaster.data.models
+package br.com.dictionmaster.data.remote.models
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

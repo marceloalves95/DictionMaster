@@ -22,7 +22,7 @@ class SearchViewModel(
         openPurchase: () -> Unit,
         openResult: () -> Unit
     ) {
-        if (getListOfWords().size < FOUR) {
+        if (getListOfWords().size < ELEVEN) {
             openResult.invoke()
         } else {
             openPurchase.invoke()
@@ -30,7 +30,7 @@ class SearchViewModel(
     }
 
     companion object {
-        const val FOUR = 4
+        const val ELEVEN = 11
     }
 
 

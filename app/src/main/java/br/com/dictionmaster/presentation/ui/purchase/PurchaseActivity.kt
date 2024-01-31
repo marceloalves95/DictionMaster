@@ -1,7 +1,5 @@
 package br.com.dictionmaster.presentation.ui.purchase
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,6 +36,7 @@ import br.com.dictionmaster.presentation.theme.ButtonColor
 import br.com.dictionmaster.presentation.theme.DictionMasterTheme
 
 class PurchaseActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -146,7 +145,7 @@ class PurchaseActivity : ComponentActivity() {
 
                     Button(
                         onClick = {
-                            finish()
+                            finishAndRemoveTask()
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -176,10 +175,6 @@ class PurchaseActivity : ComponentActivity() {
                 }
             }
         )
-    }
-
-    companion object {
-        fun newInstance(context: Context) = Intent(context, PurchaseActivity::class.java)
     }
 
     @Preview(showBackground = true)

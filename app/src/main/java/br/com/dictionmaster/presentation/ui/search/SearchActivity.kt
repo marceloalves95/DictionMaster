@@ -43,11 +43,14 @@ import br.com.dictionmaster.R
 import br.com.dictionmaster.presentation.others.TextChipWithIcon
 import br.com.dictionmaster.presentation.theme.ButtonColor
 import br.com.dictionmaster.presentation.theme.DictionMasterTheme
+import br.com.dictionmaster.presentation.ui.purchase.PurchaseActivity
 import br.com.dictionmaster.presentation.ui.result.ResultActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : ComponentActivity() {
 
     private lateinit var context: Context
+    private val viewModel: SearchViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -138,11 +141,7 @@ class SearchActivity : ComponentActivity() {
 
                     Button(
                         onClick = {
-                            val intent = newInstance(
-                                context = context,
-                                word = text
-                            )
-                            startActivity(intent)
+                            saveNumberOfWords(text)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -174,17 +173,25 @@ class SearchActivity : ComponentActivity() {
         )
     }
 
-    companion object {
-
-        private const val WORD = "word"
-        fun newInstance(
-            context: Context,
-            word: String? = null
-        ): Intent {
-            return Intent(context, ResultActivity::class.java).apply {
-                putExtra(WORD, word)
+    private fun saveNumberOfWords(word: String) {
+        viewModel.saveListOfWords(word)
+        viewModel.verifyNumberOfWords(
+            openPurchase = {
+                val intent = Intent(context, PurchaseActivity::class.java)
+                startActivity(intent)
+                finish()
+            },
+            openResult = {
+                val intent = Intent(context, ResultActivity::class.java).apply {
+                    putExtra(WORD, word)
+                }
+                startActivity(intent)
             }
-        }
+        )
+    }
+
+    companion object {
+        private const val WORD = "word"
     }
 
 
