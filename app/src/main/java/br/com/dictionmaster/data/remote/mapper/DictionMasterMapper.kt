@@ -1,10 +1,10 @@
-package br.com.dictionmaster.data.mapper
+package br.com.dictionmaster.data.remote.mapper
 
-import br.com.dictionmaster.data.models.DefinitionsResponse
-import br.com.dictionmaster.data.models.LicenseResponse
-import br.com.dictionmaster.data.models.MeaningsResponse
-import br.com.dictionmaster.data.models.PhoneticsResponse
-import br.com.dictionmaster.data.models.SearchResponse
+import br.com.dictionmaster.data.remote.models.DefinitionsResponse
+import br.com.dictionmaster.data.remote.models.LicenseResponse
+import br.com.dictionmaster.data.remote.models.MeaningsResponse
+import br.com.dictionmaster.data.remote.models.PhoneticsResponse
+import br.com.dictionmaster.data.remote.models.SearchResponse
 import br.com.dictionmaster.domain.models.Definitions
 import br.com.dictionmaster.domain.models.License
 import br.com.dictionmaster.domain.models.Meanings

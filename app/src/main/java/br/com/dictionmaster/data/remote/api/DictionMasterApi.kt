@@ -1,6 +1,6 @@
-package br.com.dictionmaster.data.api
+package br.com.dictionmaster.data.remote.api
 
-import br.com.dictionmaster.data.models.SearchResponse
+import br.com.dictionmaster.data.remote.models.SearchResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

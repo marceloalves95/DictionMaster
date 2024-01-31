@@ -3,16 +3,21 @@ package br.com.dictionmaster.core.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import br.com.dictionmaster.data.BASE_URL
+import br.com.dictionmaster.data.remote.BASE_URL
 import br.com.dictionmaster.data.DictionMasterRepositoryImpl
-import br.com.dictionmaster.data.api.DictionMasterApi
+import br.com.dictionmaster.data.local.DataSourceLocalImpl
+import br.com.dictionmaster.data.remote.api.DictionMasterApi
 import br.com.dictionmaster.data.local.LocalDataStore
+import br.com.dictionmaster.data.remote.DataSourceRemoteImpl
+import br.com.dictionmaster.data.source.DataSource
 import br.com.dictionmaster.domain.repository.DictionMasterRepository
 import br.com.dictionmaster.domain.usecase.GetSearchWordUseCase
-import br.com.dictionmaster.domain.usecase.VerifyNumberOfWordsSavedUseCase
+import br.com.dictionmaster.domain.usecase.SaveWordUseCase
+import br.com.dictionmaster.domain.usecase.VerifyNumberOfWordsUseCase
 import br.com.dictionmaster.network.others.Interceptor
 import br.com.dictionmaster.network.others.Service
 import br.com.dictionmaster.presentation.ui.result.ResultViewModel
+import br.com.dictionmaster.presentation.ui.search.SearchViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
@@ -46,8 +51,17 @@ object DictionMasterModule {
         }
         single { provideSharedPreferences(androidApplication()) }
         single { LocalDataStore(get()) }
+        single <DataSource.Local>{
+            DataSourceLocalImpl(localDataStore = get())
+        }
+        single <DataSource.Remote>{
+            DataSourceRemoteImpl(api = get())
+        }
         single<DictionMasterRepository> {
-            DictionMasterRepositoryImpl(api = get(), localDataStore = get())
+            DictionMasterRepositoryImpl(
+                dataSourceLocal = get(),
+                dataSourceRemote = get()
+            )
         }
     }
 
@@ -56,15 +70,23 @@ object DictionMasterModule {
             GetSearchWordUseCase(repository = get())
         }
         factory {
-            VerifyNumberOfWordsSavedUseCase(repository = get())
+            SaveWordUseCase(repository = get())
+        }
+        factory {
+            VerifyNumberOfWordsUseCase(repository = get())
         }
     }
 
     private fun presentationModule(): Module = module {
         viewModel {
             ResultViewModel(
-                getSearchWordUseCase = get(),
-                verifyNumberOfWordsSavedUseCase = get()
+                getSearchWordUseCase = get()
+            )
+        }
+        viewModel {
+            SearchViewModel(
+                saveWordUseCase = get(),
+                verifyNumberOfWordsUseCase = get()
             )
         }
     }

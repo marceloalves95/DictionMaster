@@ -1,22 +1,28 @@
 package br.com.dictionmaster.data.local
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class LocalDataStore(private val sharedPreferences: SharedPreferences) {
 
     companion object {
-        const val NUMBER_OF_FOUND_WORDS = "number_of_found_words"
+        const val LIST = "LIST"
     }
 
-    fun storeNumberOfFoundWords(number: Int) {
+    fun saveList(list: List<String>) {
         val editor = sharedPreferences.edit()
-        editor.putInt(NUMBER_OF_FOUND_WORDS,number)
+        val gson = Gson()
+        val json = gson.toJson(list)
+        editor.putString(LIST, json)
         editor.apply()
     }
 
-    fun getNumberOfFoundWords(): Int {
-        return sharedPreferences.getInt(NUMBER_OF_FOUND_WORDS,0)
+    fun getList(): ArrayList<String> {
+        val gson = Gson()
+        val json = sharedPreferences.getString(LIST, null)
+        val type = object : TypeToken<List<String>>() {}.type
+        return gson.fromJson(json, type)
     }
-
 }
 
